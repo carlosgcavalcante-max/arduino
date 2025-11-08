@@ -1,0 +1,47 @@
+#include <DFRobotDFPlayerMini.h>
+#include <SoftwareSerial.h>
+
+int pirPin =12;
+int rxPin = 3;
+int txPin = 2;
+
+int motionStatus =0;
+int pitState = 0;
+
+SoftwareSerial fxSerial(rxPin, txPin);
+DFRobotDFPlayerMini fxPlayer;
+
+void setup() {
+  pinMode(pirPin, INPUT);
+  pinMode(rxPin, INPUT);
+  pinMode(txPin, OUTPUT);
+  Serial.begin(9600);
+  fxSerial.begin(9600);
+  fxPlayer.begin(fxSerial);
+  fxPlayer.volume(30);
+  delay(3000);
+}
+
+void loop() {
+
+motionStatus = digitalRead(pirPin);
+  // Opcao 1
+if(motionStatus == HIGH){
+  if(pirState == LOW){
+    Serial.println("Movimento detectado!");
+    pirState = HIGH;
+
+    fxPlayer.play(1);
+  }
+}
+
+else{
+  //Opcao 1
+
+  if(pirState == HIGH){
+    Serial.println("Movimento finalizado!");
+    pirState = LOW;
+
+    fxPlayer.play(2)
+  }
+}
